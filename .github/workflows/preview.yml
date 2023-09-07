@@ -41,6 +41,20 @@ jobs:
               !public/brca_metabric
               !public/brca_tcga
               !public/brca_tcga_pub2015
+              !public/cellline_ccle_broad
+              !public/blca_tcga_pan_can_atlas_2018
+              !public/brca_tcga_pub 
+              !public/blca_tcga_pub_2017 
+              !public/coadread_tcga 
+              !public/blca_tcga 
+              !public/cesc_tcga_pan_can_atlas_2018 
+              !public/aml_ohsu_2018 
+              !public/aml_ohsu_2022 
+              !public/coadread_tcga_pub 
+              !public/all_phase2_target_2018_pub 
+              !public/coadread_tcga_pan_can_atlas_2018 
+              !public/cesc_tcga
+              
   
 
         - name: Copy Files to Study Directory
