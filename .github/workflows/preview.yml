@@ -44,7 +44,7 @@ jobs:
             sparse-checkout-cone-mode: false
             sparse-checkout: |
               preview/*
-              ${{ steps.split.outputs.NEW_LINE_DIRS }}
+              ${{ env.MULTI_LINES_TEXT }}
 
         - name: Copy Files to Study Directory
           shell: bash
