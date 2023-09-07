@@ -29,9 +29,9 @@ jobs:
 
          - name: Git LFS Checkout
            run: | 
-             git lfs pull preview
+             git lfs pull --include preview
              for dir in ${{ needs.changed_files.outputs.new_study_dirs }}; do
-               git lfs pull $dir
+               git lfs pull --include $dir
              done
     preview:
       needs: get_files
