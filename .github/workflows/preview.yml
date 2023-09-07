@@ -36,6 +36,11 @@ jobs:
             sparse-checkout: |
               preview/*
               public/*
+              !public/ccle_broad_2019
+              !public/brca_tcga_pan_can_atlas_2018
+              !public/brca_metabric
+              !public/brca_tcga
+              !public/brca_tcga_pub2015
   
 
         - name: Copy Files to Study Directory
