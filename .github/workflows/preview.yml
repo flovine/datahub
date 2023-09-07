@@ -29,8 +29,8 @@ jobs:
           run: apk update && apk add git-lfs && apk add git
         - name: Checkout Datahub Repository
           uses: actions/checkout@v3
-          with:
-            lfs: true
+          #with:
+            #lfs: true
 
         - name: LFS Checkout
           run: | 
