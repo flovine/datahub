@@ -19,7 +19,16 @@ jobs:
           shell: bash
           run: |
             echo "NEW_DIR_LOCATIONS=$( echo ${{ steps.changed-files-dir-names.outputs.added_files }} | sed 's/[^ ]*\/case_lists[^ ]*//g' )" >> $GITHUB_OUTPUT
-        
+
+    get_files:
+      runs-on: ubuntu-latest
+      steps:
+         - name: Checkout Datahub Repository
+           uses: actions/checkout@v4
+
+         - name: Git LFS Checkout
+           run: | 
+             git lfs pull preview
     preview:
       needs: changed_files
       runs-on: ubuntu-latest
@@ -27,20 +36,9 @@ jobs:
       steps:
         - name: Install Git LFS
           run: apk update && apk add git-lfs
-        - name: Install Git Safety
-          run: |
-            /usr/bin/git config --global --add safe.directory /__w/datahub/datahub
-            git lfs pull public/acbc/mskcc_2015
+ 
   
-        # - name: Split the String into New Line Delimited
-        #   id: split
-        #   run: |
-        #     new_study_dirs="${{ needs.changed_files.outputs.new_study_dirs }}"
-        #     newline_delimited=$(echo "$new_study_dirs" | tr ' ' '\n')
-        #     # echo "NEW_LINE_DIRS=$newline_delimited" >> $GITHUB_OUTPUT
-        #     echo "MULTI_LINES_TEXT<<EOF" >> $GITHUB_ENV
-        #     echo $newline_delimited >> $GITHUB_ENV
-        #     echo "EOF" >> $GITHUB_ENV
+
         - name: Checkout Datahub Repository
           uses: actions/checkout@v4
           with:
