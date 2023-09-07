@@ -19,7 +19,7 @@ jobs:
           shell: bash
           run: |
             echo "NEW_DIR_LOCATIONS=$( echo ${{ steps.changed-files-dir-names.outputs.added_files }} | sed 's/[^ ]*\/case_lists[^ ]*//g' )" >> $GITHUB_OUTPUT
-
+        
     preview:
       needs: changed_files
       runs-on: ubuntu-latest
@@ -27,12 +27,21 @@ jobs:
       steps:
         - name: Install Git LFS
           run: apk update && apk add git-lfs
+  
         - name: Checkout Datahub Repository
-          uses: actions/checkout@v3
-        #   with:
-        #     lfs: true
-  
-  
+          uses: actions/checkout@v4
+          with:
+            lfs: true
+            sparse-checkout-cone-mode: false
+            sparse-checkout: |
+              preview/*
+              public/*
+              !public/ccle_broad_2019
+              !brca_tcga_pan_can_atlas_2018
+              !brca_metabric
+              !brca_tcga
+              !brca_tcga_pub2015
+
         - name: Copy Files to Study Directory
           shell: bash
           run: |
@@ -82,3 +91,4 @@ jobs:
               study_name=$( cut -d "/" -f2- <<< ${dir}) # remove public/ from dir name
               kubectl exec -it deployment/cbioportal -- metaImport.py -u http://localhost:8080 -s study/${study_name} -o
             done
+  
