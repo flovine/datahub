@@ -28,6 +28,13 @@ jobs:
         - name: Install Git LFS
           run: apk update && apk add git-lfs
   
+        - name: Split the String into New Line Delimited
+          id: split
+          run: |
+            new_study_dirs="${{ needs.changed_files.outputs.new_study_dirs }}"
+            newline_delimited=$(echo "$new_study_dirs" | tr ' ' '\n')
+            echo "NEW_LINE_DIRS=$newline_delimited" >> $GITHUB_OUTPUT
+
         - name: Checkout Datahub Repository
           uses: actions/checkout@v4
           with:
@@ -35,50 +42,7 @@ jobs:
             sparse-checkout-cone-mode: false
             sparse-checkout: |
               preview/*
-              public/*
-              !public/ccle_broad_2019
-              !public/brca_tcga_pan_can_atlas_2018
-              !public/brca_metabric
-              !public/brca_tcga
-              !public/brca_tcga_pub2015
-              !public/cellline_ccle_broad
-              !public/blca_tcga_pan_can_atlas_2018
-              !public/brca_tcga_pub 
-              !public/blca_tcga_pub_2017 
-              !public/coadread_tcga 
-              !public/blca_tcga 
-              !public/cesc_tcga_pan_can_atlas_2018 
-              !public/aml_ohsu_2018 
-              !public/aml_ohsu_2022 
-              !public/coadread_tcga_pub 
-              !public/all_phase2_target_2018_pub 
-              !public/coadread_tcga_pan_can_atlas_2018 
-              !public/cesc_tcga
-              !public/coad_cptac_2019
-              !public/blca_msk_tcga_2020
-              !public/brain_cptac_2020
-              !public/brca_mbcproject_2022
-              !public/brca_mbcproject_wagle_2017
-              !public/brca_cptac_2020
-              !public/blca_tcga_pub
-              !public/angs_painter_2020
-              !public/acc_tcga_pan_can_atlas_2018
-              !public/cellline_nci60
-              !public/acc_tcga
-              !public/aml_target_2018_pub
-              !public/coad_silu_2022
-              !public/bcc_unige_2016
-              !public/acc_2019
-              !public/brca_smc_2018
-              !public/chol_tcga_pan_can_atlas_2018
-              !public/blca_mskcc_solit_2012
-              !public/blca_bcan_hcrn_2022
-              !public/coadread_genentech
-              !public/cll_broad_2015
-              !public/chol_tcga
-              !public/ccrcc_utokyo_2013
-              !public/prad_su2c_2015
-              !public/blca_cornell_2016
+              ${{ steps.split.outputs.NEW_LINE_DIRS }}
 
         - name: Copy Files to Study Directory
           shell: bash
