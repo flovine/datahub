@@ -27,16 +27,20 @@ jobs:
       steps:
         - name: Install Git LFS
           run: apk update && apk add git-lfs
-  
-        - name: Split the String into New Line Delimited
-          id: split
+        - name: Install Git Safety
           run: |
-            new_study_dirs="${{ needs.changed_files.outputs.new_study_dirs }}"
-            newline_delimited=$(echo "$new_study_dirs" | tr ' ' '\n')
-            # echo "NEW_LINE_DIRS=$newline_delimited" >> $GITHUB_OUTPUT
-            echo "MULTI_LINES_TEXT<<EOF" >> $GITHUB_ENV
-            echo $newline_delimited >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
+            /usr/bin/git config --global --add safe.directory /__w/datahub/datahub
+            git lfs pull public/acbc/mskcc_2015
+  
+        # - name: Split the String into New Line Delimited
+        #   id: split
+        #   run: |
+        #     new_study_dirs="${{ needs.changed_files.outputs.new_study_dirs }}"
+        #     newline_delimited=$(echo "$new_study_dirs" | tr ' ' '\n')
+        #     # echo "NEW_LINE_DIRS=$newline_delimited" >> $GITHUB_OUTPUT
+        #     echo "MULTI_LINES_TEXT<<EOF" >> $GITHUB_ENV
+        #     echo $newline_delimited >> $GITHUB_ENV
+        #     echo "EOF" >> $GITHUB_ENV
         - name: Checkout Datahub Repository
           uses: actions/checkout@v4
           with:
@@ -44,7 +48,7 @@ jobs:
             sparse-checkout-cone-mode: false
             sparse-checkout: |
               preview/*
-              ${{ env.MULTI_LINES_TEXT }}
+              # ${{ env.MULTI_LINES_TEXT }}
 
         - name: Copy Files to Study Directory
           shell: bash
