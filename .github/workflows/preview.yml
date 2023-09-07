@@ -33,8 +33,10 @@ jobs:
           run: |
             new_study_dirs="${{ needs.changed_files.outputs.new_study_dirs }}"
             newline_delimited=$(echo "$new_study_dirs" | tr ' ' '\n')
-            echo "NEW_LINE_DIRS=$newline_delimited" >> $GITHUB_OUTPUT
-
+            # echo "NEW_LINE_DIRS=$newline_delimited" >> $GITHUB_OUTPUT
+            echo "MULTI_LINES_TEXT<<EOF" >> $GITHUB_ENV
+            echo $newline_delimited >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
         - name: Checkout Datahub Repository
           uses: actions/checkout@v4
           with:
