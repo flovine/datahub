@@ -26,13 +26,21 @@ jobs:
       container: docker.io/okteto/okteto:2.19.1
       steps:
         - name: Install Git LFS
-          run: apk update && apk add git-lfs
+          run: apk update && apk add git-lfs && apk add git
         - name: Checkout Datahub Repository
           uses: actions/checkout@v3
-        #   with:
-        #     lfs: true
-  
-  
+        - name: LS
+          run: |
+            ls
+            ls public
+          #with:
+            #lfs: true
+
+        - name: LFS Checkout
+          run: | 
+            for dir in ${{ needs.changed_files.outputs.new_study_dirs }}; do
+              git lfs checkout $dir
+            done
         - name: Copy Files to Study Directory
           shell: bash
           run: |
